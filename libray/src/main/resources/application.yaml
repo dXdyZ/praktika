@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: libray
+  datasource:
+    url: jdbc:mariadb://localhost:3306/kollej_bd
+    username: app_user
+    password: werpipl15
+  jpa:
+    hibernate:
+      ddl-auto: update

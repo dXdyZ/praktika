@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Художники</title>
+</head>
+<body>
+<h2>Список художников</h2>
+<form action="/artists" method="post">
+    <input type="text" name="name" placeholder="Имя художника" required>
+    <input type="text" name="birthDate" placeholder="Дата рождения">
+    <input type="text" name="deathDate" placeholder="Дата смерти">
+    <button type="submit">Добавить художника</button>
+</form>
+<ul>
+    <li th:each="artist : ${artists}">
+        <span th:text="${artist.name}">Имя художника</span>
+        <a th:href="'/artists/delete/' + ${artist.id}">Удалить</a>
+    </li>
+</ul>
+<a href="/dashboard">Назад к главной</a>
+</body>
+</html>

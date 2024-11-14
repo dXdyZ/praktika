@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Картины</title>
+</head>
+<body>
+<h2>Список картин</h2>
+<form action="/artworks" method="post">
+    <input type="text" name="title" placeholder="Название картины" required>
+    <input type="text" name="description" placeholder="Описание">
+    <input type="text" name="crateDate" placeholder="Дата создания">
+    <button type="submit">Добавить картину</button>
+</form>
+<ul>
+    <li th:each="artwork : ${artworks}">
+        <span th:text="${artwork.title}">Название картины</span> -
+        Художник: <span th:text="${artwork.artist.name}">Имя художника</span>
+        <a th:href="'/artworks/delete/' + ${artwork.id}">Удалить</a>
+    </li>
+</ul>
+<a href="/dashboard">Назад к главной</a>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+<h2>Добро пожаловать, <span th:text="${user.username}"></span>!</h2>
+<nav>
+    <a href="/artists">Список художников</a> |
+    <a href="/artworks">Список картин</a> |
+    <a href="/logout">Выйти</a>
+</nav>
+</body>
+</html>

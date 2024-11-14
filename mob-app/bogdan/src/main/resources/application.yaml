@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: bogdan
+  datasource:
+    url: jdbc:mariadb://localhost:3306/bogdan_pituh
+    username: app_user
+    password: werpipl15
+  jpa:
+    hibernate:
+      ddl-auto: update

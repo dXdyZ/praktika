@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчет по учебной практике - Задания 1-9</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #4a90e2;
+        }
+        .code, .output {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+        .image {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .image img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Отчет по учебной практике - Задания 1-9</h1>
+
+    <!-- Задание 1 -->
+    <section>
+        <h2>Задание 1</h2>
+        <p>Преобразовать строки матрицы таким образом, чтобы элементы, равные нулю, располагались после всех остальных.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Вводим размерность матрицы
+        System.out.print("Введите размерность матрицы n: ");
+        int n = scanner.nextInt();
+        // Создаем и заполняем матрицу случайными числами в диапазоне от -n до n
+        int[][] matrix = new int[n][n];
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = random.nextInt(2 * n + 1) - n;  // Диапазон от -n до n
+            }
+        }
+        // Выводим исходную матрицу
+        System.out.println("Исходная матрица:");
+        printMatrix(matrix);
+        // Преобразуем строки матрицы, чтобы нули располагались после всех остальных элементов
+        for (int i = 0; i < n; i++) {
+            matrix[i] = transformRow(matrix[i]);
+        }
+        // Выводим преобразованную матрицу
+        System.out.println("Матрица после преобразования строк (нули после всех остальных элементов):");
+        printMatrix(matrix);
+    }
+    // Преобразование строки: перемещение нулей в конец строки
+    private static int[] transformRow(int[] row) {
+        int[] result = new int[row.length];
+        int index = 0;
+        // Добавляем все ненулевые элементы сначала
+        for (int value : row) {
+            if (value != 0) {
+                result[index++] = value;
+            }
+        }
+        // Остальные элементы будут нулями по умолчанию (инициализация массива нулями)
+        return result;
+    }
+    // Функция для вывода матрицы
+    private static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
+}
+                </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result1}}" alt="Результат задания 1">
+        </div>
+    </section>
+
+    <!-- Задание 2 -->
+    <section>
+        <h2>Задание 2</h2>
+        <p>Реализовать класс Fraction для работы с дробями: сложение, вычитание, умножение и деление дробей.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+class Fraction {
+    private int numerator;   // Числитель
+    private int denominator; // Знаменатель
+
+    public Fraction(int numerator, int denominator) {
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Знаменатель не может быть равен 0");
+        }
+        this.numerator = numerator;
+        this.denominator = denominator;
+        simplify(); // Приводим дробь к простому виду
+    }
+    // Сложение дробей
+    public Fraction add(Fraction other) {
+        int newNumerator = this.numerator * other.denominator + other.numerator * this.denominator;
+        int newDenominator = this.denominator * other.denominator;
+        return new Fraction(newNumerator, newDenominator);
+    }
+    // Вычитание дробей
+    public Fraction subtract(Fraction other) {
+        int newNumerator = this.numerator * other.denominator - other.numerator * this.denominator;
+        int newDenominator = this.denominator * other.denominator;
+        return new Fraction(newNumerator, newDenominator);
+    }
+
+    // Умножение дробей
+    public Fraction multiply(Fraction other) {
+        return new Fraction(this.numerator * other.numerator, this.denominator * other.denominator);
+    }
+    // Деление дробей
+    public Fraction divide(Fraction other) {
+        return new Fraction(this.numerator * other.denominator, this.denominator * other.numerator);
+    }
+    // Упрощение дроби
+    private void simplify() {
+        int gcd = gcd(numerator, denominator);  // Нахождение НОД (наибольший общий делитель)
+        numerator /= gcd;
+        denominator /= gcd;
+    }
+    // НОД (Алгоритм Евклида)
+    private int gcd(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return Math.abs(a);
+    }
+
+    // Метод для вывода дроби
+    @Override
+    public String toString() {
+        return numerator + "/" + denominator;
+    }
+    // Метод для изменения элементов с четным индексом
+    public static void modifyArray(Fraction[] fractions) {
+        for (int i = 0; i < fractions.length - 1; i += 2) {
+            fractions[i] = fractions[i].add(fractions[i + 1]);
+        }
+    }
+}
+class FractionArray {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Вводим количество дробей
+        System.out.print("Введите количество дробей: ");
+        int k = scanner.nextInt();
+        // Инициализация массива дробей
+        Fraction[] fractions = new Fraction[k];
+        // Ввод значений для массива дробей
+        for (int i = 0; i < k; i++) {
+            System.out.print("Введите числитель для дроби " + (i + 1) + ": ");
+            int numerator = scanner.nextInt();
+            System.out.print("Введите знаменатель для дроби " + (i + 1) + ": ");
+            int denominator = scanner.nextInt();
+            fractions[i] = new Fraction(numerator, denominator);
+        }
+        // Вывод исходного массива дробей
+        System.out.println("Исходный массив дробей:");
+        for (Fraction fraction : fractions) {
+            System.out.println(fraction);
+        }
+        // Преобразуем массив: каждый элемент с четным индексом изменяется путем сложения с последующим элементом
+        Fraction.modifyArray(fractions);
+        // Вывод преобразованного массива дробей
+        System.out.println("Преобразованный массив дробей:");
+        for (Fraction fraction : fractions) {
+            System.out.println(fraction);
+        }
+    }
+}
+                </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result2}}" alt="Результат задания 2">
+        </div>
+    </section>
+
+    <!-- Задание 3 -->
+    <section>
+        <h2>Задание 3</h2>
+        <p>Реализовать класс для работы с одномерными массивами и методами сложения, вычитания и умножения массивов.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+import java.util.Arrays;
+
+class Element {
+    private int value;
+
+    public Element(int value) {
+        this.value = value;
+    }
+    // Получить значение элемента
+    public int getValue() {
+        return value;
+    }
+    // Переопределение метода equals()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Element element = (Element) o;
+        return value == element.value;
+    }
+    // Переопределение метода hashCode()
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+    // Переопределение метода toString()
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
+}
+// Класс Массив
+class Array {
+    private Element[] elements;
+
+    public Array(int size) {
+        elements = new Element[size];
+    }
+    // Метод для заполнения массива
+    public void create(int[] values) {
+        if (values.length != elements.length) {
+            throw new IllegalArgumentException("Размеры массива и количества элементов не совпадают.");
+        }
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = new Element(values[i]);
+        }
+    }
+    // Метод для вывода массива на консоль
+    public void print() {
+        System.out.println(Arrays.toString(elements));
+    }
+    // Сложение массивов
+    public Array add(Array other) {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            result.elements[i] = new Element(this.elements[i].getValue() + other.elements[i].getValue());
+        }
+        return result;
+    }
+
+    // Вычитание массивов
+    public Array subtract(Array other) {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            result.elements[i] = new Element(this.elements[i].getValue() - other.elements[i].getValue());
+        }
+        return result;
+    }
+    // Перемножение массивов
+    public Array multiply(Array other) {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            result.elements[i] = new Element(this.elements[i].getValue() * other.elements[i].getValue());
+        }
+        return result;
+    }
+    // Переопределение метода equals()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Array array = (Array) o;
+        return Arrays.equals(elements, array.elements);
+    }
+    // Переопределение метода hashCode()
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(elements);
+    }
+    // Переопределение метода toString()
+    @Override
+    public String toString() {
+        return Arrays.toString(elements);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        // Создание двух массивов одинакового размера
+        Array array1 = new Array(3);
+        Array array2 = new Array(3);
+        // Заполняем массивы значениями
+        array1.create(new int[]{1, 2, 3});
+        array2.create(new int[]{4, 5, 6});
+        // Выводим массивы на консоль
+        System.out.println("Массив 1:");
+        array1.print();
+        System.out.println("Массив 2:");
+        array2.print();
+
+        // Операции над массивами
+        Array sumArray = array1.add(array2);
+        Array subtractArray = array1.subtract(array2);
+        Array multiplyArray = array1.multiply(array2);
+        // Вывод результатов
+        System.out.println("Сумма массивов:");
+        sumArray.print();
+        System.out.println("Разность массивов:");
+        subtractArray.print();
+        System.out.println("Произведение массивов:");
+        multiplyArray.print();
+    }
+}
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result3}}" alt="Результат задания 3">
+        </div>
+    </section>
+
+    <!-- Задание 4 -->
+    <section>
+        <h2>Задание 4</h2>
+        <p>Создать класс для работы с отделами магазина, добавлять товары и услуги в отделы, а также отображать содержимое каждого отдела.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+class Shop {
+    private List<Department> departments; // Список отделов в магазине
+    public Shop() {
+        departments = new ArrayList&lt;&gt;();
+    }
+    // Метод для добавления отдела
+    public void addDepartment(String name) {
+        departments.add(new Department(name));
+    }
+    // Метод для добавления товара в отдел
+    public void addProductToDepartment(String departmentName, String product) {
+        for (Department department : departments) {
+            if (department.getName().equals(departmentName)) {
+                department.addProduct(product);
+                return;
+            }
+        }
+        System.out.println("Отдел не найден: " + departmentName);
+    }
+    // Метод для добавления услуги в отдел
+    public void addServiceToDepartment(String departmentName, String service) {
+        for (Department department : departments) {
+            if (department.getName().equals(departmentName)) {
+                department.addService(service);
+                return;
+            }
+        }
+        System.out.println("Отдел не найден: " + departmentName);
+    }
+    // Метод для вывода информации о всех отделах
+    public void displayDepartments() {
+        for (Department department : departments) {
+            System.out.println(department);
+        }
+    }
+    // Внутренний класс Department
+    class Department {
+        private String name;               // Название отдела
+        private List<String> products;     // Список товаров
+        private List<String> services;     // Список услуг
+        public Department(String name) {
+            this.name = name;
+            products = new ArrayList&lt;&gt;();
+            services = new ArrayList&lt;&gt;();
+        }
+        // Получить название отдела
+        public String getName() {
+            return name;
+        }
+        // Добавить товар
+        public void addProduct(String product) {
+            products.add(product);
+        }
+        // Добавить услугу
+        public void addService(String service) {
+            services.add(service);
+        }
+        // Переопределение метода toString() для вывода информации об отделе
+        @Override
+        public String toString() {
+            return "Отдел: " + name + "\nТовары: " + products + "\nУслуги: " + services + "\n";
+        }
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Shop shop = new Shop();
+
+        // Добавление отделов
+        shop.addDepartment("Электроника");
+        shop.addDepartment("Одежда");
+
+        // Добавление товаров и услуг
+        shop.addProductToDepartment("Электроника", "Телевизор");
+        shop.addProductToDepartment("Электроника", "Смартфон");
+        shop.addServiceToDepartment("Электроника", "Ремонт электроники");
+        shop.addProductToDepartment("Одежда", "Куртка");
+        shop.addProductToDepartment("Одежда", "Джинсы");
+        shop.addServiceToDepartment("Одежда", "Пошив одежды");
+        // Вывод всех отделов, товаров и услуг
+        shop.displayDepartments();
+    }
+}
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result4}}" alt="Результат задания 4">
+        </div>
+    </section>
+
+
+    <!-- Задание 5 -->
+    <section>
+        <h2>Задание 5</h2>
+        <p>Найти уникальные слова в тексте, у которых первая и последняя буквы совпадают.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+public class UniqueWords {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Ввод текста с консоли
+        System.out.println("Введите текст:");
+        String text = scanner.nextLine();
+        // Разделяем текст на слова
+        String[] words = text.split("\\s+");
+        // Множество для хранения уникальных слов
+        Set<String> uniqueWords = new HashSet&lt;&gt;();
+        // Обрабатываем каждое слово
+        for (String word : words) {
+            word = word.toLowerCase().replaceAll("[^a-zA-Zа-яА-Я]", ""); // Приводим к нижнему регистру и убираем знаки препинания
+            if (word.length() > 1 && word.charAt(0) == word.charAt(word.length() - 1)) {
+                uniqueWords.add(word); // Добавляем слово, если его первая и последняя буквы совпадают
+            }
+        }
+        // Вывод уникальных слов
+        System.out.println("Уникальные слова, у которых первая и последняя буквы совпадают:");
+        for (String word : uniqueWords) {
+            System.out.println(word);
+        }
+    }
+}
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result5}}" alt="Результат задания 5">
+        </div>
+    </section>
+
+    <!-- Задание 6 -->
+    <section>
+        <h2>Задание 6</h2>
+        <p>Создать класс для работы с одномерными массивами, включающий операции сложения, вычитания и умножения элементов с контролем индексов.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+import java.util.Arrays;
+import java.util.Objects;
+import java.io.*;
+// Класс исключения для недопустимых значений
+class InvalidValueException extends Exception {
+    public InvalidValueException(String message) {
+        super(message);
+    }
+}
+// Класс Элемент
+class Element {
+    private int value;
+    public Element(int value) throws InvalidValueException {
+        if (value < 0) {
+            throw new InvalidValueException("Значение элемента не может быть отрицательным: " + value);
+        }
+        this.value = value;
+    }
+    // Получить значение элемента
+    public int getValue() {
+        return value;
+    }
+    // Переопределение метода equals()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Element element = (Element) o;
+        return value == element.value;
+    }
+    // Переопределение метода hashCode()
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+    // Переопределение метода toString()
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
+}
+// Класс Массив
+class Array {
+    private Element[] elements;
+    public Array(int size) {
+        elements = new Element[size];
+    }
+    // Метод для заполнения массива
+    public void create(int[] values) throws InvalidValueException {
+        if (values.length != elements.length) {
+            throw new IllegalArgumentException("Размеры массива и количества элементов не совпадают.");
+        }
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = new Element(values[i]);
+        }
+    }
+    // Метод для вывода массива на консоль
+    public void print() {
+        System.out.println(Arrays.toString(elements));
+    }
+    // Сложение массивов
+    public Array add(Array other) throws IllegalArgumentException {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            try {
+                result.elements[i] = new Element(this.elements[i].getValue() + other.elements[i].getValue());
+            } catch (InvalidValueException e) {
+                System.err.println("Ошибка при добавлении: " + e.getMessage());
+            }
+        }
+        return result;
+    }
+    // Вычитание массивов
+    public Array subtract(Array other) throws IllegalArgumentException {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            try {
+                result.elements[i] = new Element(this.elements[i].getValue() - other.elements[i].getValue());
+            } catch (InvalidValueException e) {
+                System.err.println("Ошибка при вычитании: " + e.getMessage());
+            }
+        }
+        return result;
+    }
+    // Перемножение массивов
+    public Array multiply(Array other) throws IllegalArgumentException {
+        if (other.elements.length != this.elements.length) {
+            throw new IllegalArgumentException("Размеры массивов не совпадают.");
+        }
+        Array result = new Array(this.elements.length);
+        for (int i = 0; i < this.elements.length; i++) {
+            try {
+                result.elements[i] = new Element(this.elements[i].getValue() * other.elements[i].getValue());
+            } catch (InvalidValueException e) {
+                System.err.println("Ошибка при умножении: " + e.getMessage());
+            }
+        }
+        return result;
+    }
+    // Переопределение метода equals()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Array array = (Array) o;
+        return Arrays.equals(elements, array.elements);
+    }
+    // Переопределение метода hashCode()
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(elements);
+    }
+    // Переопределение метода toString()
+    @Override
+    public String toString() {
+        return Arrays.toString(elements);
+    }
+}
+// Главный класс
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Создание двух массивов одинакового размера
+            Array array1 = new Array(3);
+            Array array2 = new Array(3);
+            // Заполняем массивы значениями
+            array1.create(new int[]{1, 2, 3});
+            array2.create(new int[]{4, 5, 6});
+            // Выводим массивы на консоль
+            System.out.println("Массив 1:");
+            array1.print();
+            System.out.println("Массив 2:");
+            array2.print();
+            // Операции над массивами
+            Array sumArray = array1.add(array2);
+            Array subtractArray = array1.subtract(array2);
+            Array multiplyArray = array1.multiply(array2);
+            // Вывод результатов
+            System.out.println("Сумма массивов:");
+            sumArray.print();
+            System.out.println("Разность массивов:");
+            subtractArray.print();
+            System.out.println("Произведение массивов:");
+            multiplyArray.print();
+        } catch (OutOfMemoryError e) {
+            System.err.println("Ошибка: нехватка памяти.");
+        } catch (IllegalArgumentException e) {
+            System.err.println("Ошибка: " + e.getMessage());
+        } catch (InvalidValueException e) {
+            System.err.println("Ошибка: недопустимое значение элемента. " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Произошла непредвиденная ошибка: " + e.getMessage());
+        }
+    }
+}
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result6}}" alt="Результат задания 6">
+        </div>
+    </section>
+
+    <!-- Задание 7 -->
+    <section>
+        <h2>Задание 7</h2>
+        <p>Нарисовать схему цветка с горшком с использованием графики.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre>
+public class Main extends JPanel {
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        // Рисуем горшок
+        g2d.setColor(Color.BLACK);
+        g2d.fillPolygon(new int[]{100, 200, 150}, new int[]{300, 300, 400}, 3); // Трапеция для горшка
+
+        // Рисуем стебли
+        g2d.setStroke(new BasicStroke(5));
+        g2d.drawLine(150, 300, 150, 200); // Центральный стебель
+        g2d.drawLine(150, 300, 130, 220); // Левый стебель
+        g2d.drawLine(150, 300, 170, 220); // Правый стебель
+
+        // Рисуем цветы (схематично)
+        drawFlower(g2d, 150, 200); // Центральный цветок
+        drawFlower(g2d, 130, 220); // Левый цветок
+        drawFlower(g2d, 170, 220); // Правый цветок
+    }
+
+    // Метод для рисования простого цветка
+    private void drawFlower(Graphics2D g2d, int x, int y) {
+        g2d.setColor(Color.BLACK);
+        g2d.fillOval(x - 10, y - 10, 20, 20); // Центр цветка
+
+        // Лепестки цветка
+        for (int i = 0; i < 12; i++) {
+            double angle = Math.toRadians(i * 30);
+            int x1 = (int) (x + Math.cos(angle) * 20);
+            int y1 = (int) (y + Math.sin(angle) * 20);
+            g2d.drawLine(x, y, x1, y1);
+        }
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Flower Drawing");
+        Main panel = new Main();
+        frame.add(panel);
+        frame.setSize(400, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result7}}" alt="Результат задания 7">
+        </div>
+    </section>
+
+    <!-- Задание 8 -->
+    <section>
+        <h2>Задание 8</h2>
+        <p>Создать класс для работы с векторами целых чисел, поддерживающий арифметические операции и вывод элементов по индексу.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre th:inline="none">
+import java.util.Arrays;
+
+public class IntVector {
+    private int[] elements;
+    private int lowerBound;
+    private int upperBound;
+
+    // Конструктор с произвольными границами индексов
+    public IntVector(int lowerBound, int upperBound) {
+        if (lowerBound &gt; upperBound) {
+            throw new IllegalArgumentException("Нижняя граница не может быть больше верхней.");
+        }
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+        elements = new int[upperBound - lowerBound + 1]; // Размер массива
+    }
+
+    // Метод для получения значения элемента с контролем индекса
+    public int getElement(int index) {
+        checkIndex(index);
+        return elements[index - lowerBound];
+    }
+
+    // Метод для установки значения элемента с контролем индекса
+    public void setElement(int index, int value) {
+        checkIndex(index);
+        elements[index - lowerBound] = value;
+    }
+
+    // Проверка выхода за пределы индексов
+    private void checkIndex(int index) {
+        if (index &lt; lowerBound || index &gt; upperBound) {
+            throw new ArrayIndexOutOfBoundsException("Индекс вне границ массива: " + index);
+        }
+    }
+
+    // Операция поэлементного сложения с другим массивом
+    public IntVector add(IntVector other) {
+        if (this.lowerBound != other.lowerBound || this.upperBound != other.upperBound) {
+            throw new IllegalArgumentException("Границы массивов не совпадают.");
+        }
+        IntVector result = new IntVector(this.lowerBound, this.upperBound);
+        for (int i = lowerBound; i &lt;= upperBound; i++) {
+            result.setElement(i, this.getElement(i) + other.getElement(i));
+        }
+        return result;
+    } <!-- строка 789 -->
+
+    // Операция поэлементного вычитания с другим массивом
+    public IntVector subtract(IntVector other) {
+        if (this.lowerBound != other.lowerBound || this.upperBound != other.upperBound) {
+            throw new IllegalArgumentException("Границы массивов не совпадают.");
+        }
+        IntVector result = new IntVector(this.lowerBound, this.upperBound);
+        for (int i = lowerBound; i &lt;= upperBound; i++) {
+            result.setElement(i, this.getElement(i) - other.getElement(i));
+        }
+        return result;
+    }
+
+    // Умножение всех элементов на скаляр
+    public void multiplyByScalar(int scalar) {
+        for (int i = 0; i &lt; elements.length; i++) {
+            elements[i] *= scalar;
+        }
+    }
+
+    // Деление всех элементов на скаляр
+    public void divideByScalar(int scalar) {
+        if (scalar == 0) {
+            throw new ArithmeticException("Деление на ноль.");
+        }
+        for (int i = 0; i &lt; elements.length; i++) {
+            elements[i] /= scalar;
+        }
+    }
+
+    // Печать всего массива
+    public void print() {
+        System.out.println(Arrays.toString(elements));
+    }
+
+    // Печать элемента по индексу
+    public void printElement(int index) {
+        checkIndex(index);
+        System.out.println("Элемент с индексом " + index + ": " + getElement(index));
+    }
+
+    public static void main(String[] args) {
+        // Пример использования
+        IntVector vector1 = new IntVector(1, 5); // Массив с индексами от 1 до 5
+        IntVector vector2 = new IntVector(1, 5);
+
+        // Устанавливаем значения элементов
+        for (int i = 1; i &lt;= 5; i++) {
+            vector1.setElement(i, i * 2);
+            vector2.setElement(i, i + 3);
+        }
+
+        // Печать исходных массивов
+        System.out.println("Вектор 1:");
+        vector1.print();
+        System.out.println("Вектор 2:");
+        vector2.print();
+
+        // Сложение массивов
+        IntVector sum = vector1.add(vector2);
+        System.out.println("Сумма векторов:");
+        sum.print();
+
+        // Вычитание массивов
+        IntVector diff = vector1.subtract(vector2);
+        System.out.println("Разность векторов:");
+        diff.print();
+
+        // Умножение вектора на скаляр
+        vector1.multiplyByScalar(3);
+        System.out.println("Вектор 1 после умножения на 3:");
+        vector1.print();
+
+        // Деление вектора на скаляр
+        vector2.divideByScalar(2);
+        System.out.println("Вектор 2 после деления на 2:");
+        vector2.print();
+    }
+}
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="${result8}" alt="Результат задания 8">
+        </div>
+    </section>
+
+
+    <!-- Задание 9 -->
+    <section>
+        <h2>Задание 9</h2>
+        <p>Реализовать итальянскую игру «Математико» с использованием колоды карт и игрового поля.</p>
+        <div class="code">
+            <strong>Код:</strong><br>
+            <pre th:inline="none">
+class CardDeck {
+    private ArrayList&lt;Integer&gt; deck;
+    public CardDeck() {
+        deck = new ArrayList&lt;&gt;();
+        // Заполняем колоду числами от 1 до 13, по 4 карты каждого числа
+        for (int i = 1; i &lt;= 13; i++) {
+            for (int j = 0; j &lt; 4; j++) {
+                deck.add(i);
+            }
+        }
+        // Перемешиваем колоду
+        Collections.shuffle(deck);
+    }
+    // Извлекаем карту из колоды
+    public int drawCard() {
+        return deck.remove(deck.size() - 1);
+    }
+
+    public boolean isEmpty() {
+        return deck.isEmpty();
+    }
+}
+class GameBoard {
+    private int[][] board;
+
+    public GameBoard() {
+        board = new int[5][5];
+    }
+    // Заполняем ячейку на игровом поле
+    public boolean placeCard(int row, int col, int card) {
+        if (board[row][col] != 0) {
+            return false; // Ячейка уже занята
+        }
+        board[row][col] = card;
+        return true;
+    }
+    // Печать игрового поля
+    public void printBoard() {
+        for (int[] row : board) {
+            for (int cell : row) {
+                System.out.printf("%2d ", cell);
+            }
+            System.out.println();
+        }
+    }
+    // Проверка, свободна ли ячейка
+    public boolean isCellEmpty(int row, int col) {
+        return board[row][col] == 0;
+    }
+    // Подсчет очков (упрощенный)
+    public int calculateScore() {
+        int score = 0;
+        // Добавьте сюда логику подсчета очков по таблице комбинаций
+        // В данной версии программы можно оставить подсчет очков простым
+        return score;
+    }
+}
+class Game {
+    public static void main(String[] args) {
+        CardDeck deck = new CardDeck();
+        GameBoard board = new GameBoard();
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+        // Симуляция игры между игроком и компьютером
+        boolean isPlayerTurn = true; // Очередь игрока
+        while (!deck.isEmpty()) {
+            int card = deck.drawCard();
+            System.out.println("Вытащена карта: " + card);
+
+            if (isPlayerTurn) {
+                System.out.println("Ваш ход.");
+                while (true) {
+                    // Выбор позиции для размещения карты
+                    System.out.print("Введите номер строки (0-4): ");
+                    int row = scanner.nextInt();
+                    System.out.print("Введите номер столбца (0-4): ");
+                    int col = scanner.nextInt();
+                    // Проверяем правильность ввода
+                    if (row &lt; 0 || row &gt; 4 || col &lt; 0 || col &gt; 4) {
+                        System.out.println("Неверные координаты. Попробуйте снова.");
+                        continue;
+                    }
+                    // Если ячейка свободна, игрок размещает карту
+                    if (board.placeCard(row, col, card)) {
+                        break;
+                    } else {
+                        System.out.println("Эта ячейка уже занята. Попробуйте снова.");
+                    }
+                }
+            } else {
+                System.out.println("Ход компьютера.");
+                // Компьютер ищет случайную свободную ячейку
+                while (true) {
+                    int row = random.nextInt(5);
+                    int col = random.nextInt(5);
+                    if (board.isCellEmpty(row, col)) {
+                        board.placeCard(row, col, card);
+                        System.out.println("Компьютер поставил карту в ячейку (" + row + ", " + col + ")");
+                        break;
+                    }
+                }
+            }
+            // Вывод игрового поля после каждого хода
+            board.printBoard();
+            // Переключение хода
+            isPlayerTurn = !isPlayerTurn;
+        }
+        // Игра окончена, подсчитываем очки
+        int finalScore = board.calculateScore();
+        System.out.println("Игра окончена. Ваш итоговый счет: " + finalScore);
+    }
+}
+
+        </pre>
+        </div>
+        <div class="image">
+            <img th:src="@{${result9}}" alt="Результат задания 9">
+        </div>
+    </section>
+
+
+</div>
+</body>
+</html>
